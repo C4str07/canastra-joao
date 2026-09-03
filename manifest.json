@@ -1,16 +1,18 @@
 {
+  "id": "/canastra-joao/",
   "name": "Marcador de Canastra",
   "short_name": "Canastra",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "fullscreen"],
   "background_color": "#0d3b2e",
   "theme_color": "#0d3b2e",
   "icons": [
     {
       "src": "./icone.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
