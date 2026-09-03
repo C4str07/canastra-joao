@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marcador de Canastra</title>
+
+    <!-- Configurações do PWA (Aplicativo) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0d3b2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <style>
         :root {
             --bg-color: #0d3b2e;
@@ -199,7 +206,7 @@
 </div>
 
 <script>
-    // Estrutura equivalente à 'struct Equipe' do C++
+    // Lógica do Jogo
     class Equipe {
         constructor(nome) {
             this.nome = nome;
@@ -234,23 +241,18 @@
         const p1 = parseInt(input1.value) || 0;
         const p2 = parseInt(input2.value) || 0;
 
-        // Soma os pontos acumulados
         t1.pontos += p1;
         t2.pontos += p2;
 
-        // Atualiza os pontos na tela
         document.getElementById("score1").innerText = t1.pontos;
         document.getElementById("score2").innerText = t2.pontos;
 
-        // Atualiza a regra de descer (80 ou 120)
         document.getElementById("req1").innerText = t1.getPontosParaDescer();
         document.getElementById("req2").innerText = t2.getPontosParaDescer();
 
-        // Limpa os campos de input
         input1.value = "";
         input2.value = "";
 
-        // Condição de fim de jogo (5000 pontos)
         if (t1.pontos >= 5000 || t2.pontos >= 5000) {
             encerrarJogo();
         }
@@ -270,6 +272,13 @@
 
         winnerDiv.innerHTML = `<div class="winner-banner">${mensagem}</div>`;
         document.getElementById("btnSubmit").disabled = true;
+    }
+
+    // Registro do Service Worker para o PWA (Modo App)
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then(() => console.log('App PWA pronto para uso!'))
+            .catch(err => console.log('Erro ao registrar PWA:', err));
     }
 </script>
 
