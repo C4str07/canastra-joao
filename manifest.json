@@ -2,14 +2,16 @@
   "name": "Marcador de Canastra",
   "short_name": "Canastra",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0d3b2e",
   "theme_color": "#0d3b2e",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/1041/1041888.png",
+      "src": "./icone.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
