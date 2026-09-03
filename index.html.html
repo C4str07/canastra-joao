@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcador de Canastra</title>
+    <style>
+        :root {
+            --bg-color: #0d3b2e;
+            --card-bg: #164e3d;
+            --accent-gold: #f39c12;
+            --text-light: #ffffff;
+            --button-green: #27ae60;
+            --button-hover: #219150;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            color: var(--accent-gold);
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #2a6f58;
+            background-color: #0a2920;
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--accent-gold);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--button-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--button-hover);
+        }
+
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        .team-card {
+            background-color: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--accent-gold);
+        }
+
+        .team-card h3 {
+            margin: 0 0 10px 0;
+            color: var(--accent-gold);
+            font-size: 1.3rem;
+        }
+
+        .score-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .rule-badge {
+            display: inline-block;
+            background-color: #e67e22;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .winner-banner {
+            text-align: center;
+            background-color: var(--accent-gold);
+            color: #000;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-top: 15px;
+            animation: pop 0.3s ease-out;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>♣️ Canastra ♠️</h1>
+
+    <!-- Tela de Cadastro dos Times -->
+    <div id="setup-screen">
+        <div class="input-group">
+            <label for="name1">Nome da Equipe 1:</label>
+            <input type="text" id="name1" value="Time 1">
+        </div>
+        <div class="input-group">
+            <label for="name2">Nome da Equipe 2:</label>
+            <input type="text" id="name2" value="Time 2">
+        </div>
+        <button onclick="iniciarPartida()">Iniciar Jogo</button>
+    </div>
+
+    <!-- Painel da Partida -->
+    <div id="game-screen" style="display: none;">
+        
+        <!-- Time 1 -->
+        <div class="team-card">
+            <h3 id="displayTeam1">Time 1</h3>
+            <div class="score-info">
+                <span>Pontos acumulados:</span>
+                <strong id="score1">0</strong>
+            </div>
+            <div class="rule-badge">
+                Desce com: <span id="req1">80</span> pts
+            </div>
+            <input type="number" id="round1" placeholder="Pontos da rodada (ex: 350)">
+        </div>
+
+        <!-- Time 2 -->
+        <div class="team-card">
+            <h3 id="displayTeam2">Time 2</h3>
+            <div class="score-info">
+                <span>Pontos acumulados:</span>
+                <strong id="score2">0</strong>
+            </div>
+            <div class="rule-badge">
+                Desce com: <span id="req2">80</span> pts
+            </div>
+            <input type="number" id="round2" placeholder="Pontos da rodada (ex: 200)">
+        </div>
+
+        <button id="btnSubmit" onclick="somarPontos()">Somar Rodada</button>
+        <div id="winnerDisplay"></div>
+    </div>
+</div>
+
+<script>
+    // Estrutura equivalente à 'struct Equipe' do C++
+    class Equipe {
+        constructor(nome) {
+            this.nome = nome;
+            this.pontos = 0;
+        }
+
+        getPontosParaDescer() {
+            return this.pontos >= 2500 ? 120 : 80;
+        }
+    }
+
+    let t1, t2;
+
+    function iniciarPartida() {
+        const name1 = document.getElementById("name1").value.trim() || "Time 1";
+        const name2 = document.getElementById("name2").value.trim() || "Time 2";
+
+        t1 = new Equipe(name1);
+        t2 = new Equipe(name2);
+
+        document.getElementById("displayTeam1").innerText = t1.nome;
+        document.getElementById("displayTeam2").innerText = t2.nome;
+
+        document.getElementById("setup-screen").style.display = "none";
+        document.getElementById("game-screen").style.display = "block";
+    }
+
+    function somarPontos() {
+        const input1 = document.getElementById("round1");
+        const input2 = document.getElementById("round2");
+
+        const p1 = parseInt(input1.value) || 0;
+        const p2 = parseInt(input2.value) || 0;
+
+        // Soma os pontos acumulados
+        t1.pontos += p1;
+        t2.pontos += p2;
+
+        // Atualiza os pontos na tela
+        document.getElementById("score1").innerText = t1.pontos;
+        document.getElementById("score2").innerText = t2.pontos;
+
+        // Atualiza a regra de descer (80 ou 120)
+        document.getElementById("req1").innerText = t1.getPontosParaDescer();
+        document.getElementById("req2").innerText = t2.getPontosParaDescer();
+
+        // Limpa os campos de input
+        input1.value = "";
+        input2.value = "";
+
+        // Condição de fim de jogo (5000 pontos)
+        if (t1.pontos >= 5000 || t2.pontos >= 5000) {
+            encerrarJogo();
+        }
+    }
+
+    function encerrarJogo() {
+        const winnerDiv = document.getElementById("winnerDisplay");
+        let mensagem = "";
+
+        if (t1.pontos > t2.pontos) {
+            mensagem = `🏆 ${t1.nome} VENCEU COM ${t1.pontos} PONTOS!`;
+        } else if (t2.pontos > t1.pontos) {
+            mensagem = `🏆 ${t2.nome} VENCEU COM ${t2.pontos} PONTOS!`;
+        } else {
+            mensagem = `🤝 EMPATE EM ${t1.pontos} PONTOS!`;
+        }
+
+        winnerDiv.innerHTML = `<div class="winner-banner">${mensagem}</div>`;
+        document.getElementById("btnSubmit").disabled = true;
+    }
+</script>
+
+</body>
+</html>
