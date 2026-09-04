@@ -1,285 +1,569 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marcador de Canastra</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marcador de Canastra</title>
 
-    <!-- Configurações do PWA (Aplicativo) -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0d3b2e">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Configurações do PWA (Aplicativo) -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0d3b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <style>
-        :root {
-            --bg-color: #0d3b2e;
-            --card-bg: #164e3d;
-            --accent-gold: #f39c12;
-            --text-light: #ffffff;
-            --button-green: #27ae60;
-            --button-hover: #219150;
-        }
+<style>
+  :root {
+    --bg-color: #0d3b2e;
+    --card-bg: #164e3d;
+    --accent-gold: #f39c12;
+    --text-light: #ffffff;
+    --button-green: #27ae60;
+    --button-hover: #219150;
+    --button-red: #c0392b;
+    --button-red-hover: #a93226;
+    --button-gray: #4a4a4a;
+  }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-light);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-light);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
 
-        .container {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
-            width: 100%;
-            max-width: 480px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
+  .container {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    padding: 25px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
 
-        h1 {
-            text-align: center;
-            margin-top: 0;
-            color: var(--accent-gold);
-            font-size: 1.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+  h1 {
+    text-align: center;
+    margin-top: 0;
+    color: var(--accent-gold);
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+  .input-group { margin-bottom: 15px; }
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 0.95rem;
-            opacity: 0.9;
-        }
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
 
-        input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #2a6f58;
-            background-color: #0a2920;
-            color: white;
-            font-size: 1rem;
-            box-sizing: border-box;
-            outline: none;
-        }
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #2a6f58;
+    background-color: #0a2920;
+    color: white;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+  }
 
-        input:focus {
-            border-color: var(--accent-gold);
-        }
+  input:focus { border-color: var(--accent-gold); }
 
-        button {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--button-green);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 10px;
-        }
+  button {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--button-green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 10px;
+  }
 
-        button:hover {
-            background-color: var(--button-hover);
-        }
+  button:hover { background-color: var(--button-hover); }
 
-        button:disabled {
-            background-color: #555;
-            cursor: not-allowed;
-        }
+  button:disabled { background-color: #555; cursor: not-allowed; }
 
-        .team-card {
-            background-color: rgba(0, 0, 0, 0.25);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 5px solid var(--accent-gold);
-        }
+  button.secondary { background-color: var(--button-gray); }
+  button.secondary:hover { background-color: #5c5c5c; }
 
-        .team-card h3 {
-            margin: 0 0 10px 0;
-            color: var(--accent-gold);
-            font-size: 1.3rem;
-        }
+  button.danger { background-color: var(--button-red); }
+  button.danger:hover { background-color: var(--button-red-hover); }
 
-        .score-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-        }
+  .actions-row {
+    display: flex;
+    gap: 10px;
+  }
+  .actions-row button { margin-top: 10px; }
 
-        .rule-badge {
-            display: inline-block;
-            background-color: #e67e22;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
+  .team-card {
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 5px solid var(--accent-gold);
+  }
 
-        .winner-banner {
-            text-align: center;
-            background-color: var(--accent-gold);
-            color: #000;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 1.3rem;
-            margin-top: 15px;
-            animation: pop 0.3s ease-out;
-        }
+  .team-card h3 {
+    margin: 0 0 10px 0;
+    color: var(--accent-gold);
+    font-size: 1.3rem;
+  }
 
-        @keyframes pop {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-    </style>
+  .score-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  .rule-badge {
+    display: inline-block;
+    background-color: #e67e22;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  /* --- Bônus de canastra --- */
+  .bonus-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 0.85rem;
+  }
+
+  .bonus-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 6px;
+    padding: 6px 8px;
+  }
+
+  .bonus-item label { margin-bottom: 0; opacity: 1; }
+
+  .bonus-item input[type="number"] {
+    width: 55px;
+    padding: 4px;
+    text-align: center;
+  }
+
+  .bonus-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* --- Histórico de rodadas --- */
+  .historico {
+    margin-top: 15px;
+    max-height: 160px;
+    overflow-y: auto;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .historico h4 {
+    margin: 0 0 8px 0;
+    font-size: 0.9rem;
+    color: var(--accent-gold);
+  }
+
+  .historico-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .historico-vazio {
+    font-size: 0.85rem;
+    opacity: 0.6;
+    text-align: center;
+  }
+
+  .winner-banner {
+    text-align: center;
+    background-color: var(--accent-gold);
+    color: #000;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-top: 15px;
+    animation: pop 0.3s ease-out;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+</style>
 </head>
 <body>
 
 <div class="container">
-    <h1>♣️ Canastra ♠️</h1>
+  <h1>♣️ Canastra ♠️</h1>
 
-    <!-- Tela de Cadastro dos Times -->
-    <div id="setup-screen">
-        <div class="input-group">
-            <label for="name1">Nome da Equipe 1:</label>
-            <input type="text" id="name1" value="Time 1">
+  <!-- Tela de Cadastro dos Times -->
+  <div id="setup-screen">
+    <div class="input-group">
+      <label for="name1">Nome da Equipe 1:</label>
+      <input type="text" id="name1" value="Time 1">
+    </div>
+    <div class="input-group">
+      <label for="name2">Nome da Equipe 2:</label>
+      <input type="text" id="name2" value="Time 2">
+    </div>
+    <button onclick="iniciarPartida()">Iniciar Jogo</button>
+  </div>
+
+  <!-- Painel da Partida -->
+  <div id="game-screen" style="display: none;">
+
+    <!-- Time 1 -->
+    <div class="team-card">
+      <h3 id="displayTeam1">Time 1</h3>
+      <div class="score-info">
+        <span>Pontos acumulados:</span>
+        <strong id="score1">0</strong>
+      </div>
+      <div class="rule-badge">Desce com: <span id="req1">50</span> pts</div>
+      <input type="number" id="round1" placeholder="Pontos da rodada (ex: 350)">
+
+      <div class="bonus-grid">
+        <div class="bonus-item">
+          <label for="limpas1">Limpas (x200)</label>
+          <input type="number" id="limpas1" min="0" value="0">
         </div>
-        <div class="input-group">
-            <label for="name2">Nome da Equipe 2:</label>
-            <input type="text" id="name2" value="Time 2">
+        <div class="bonus-item">
+          <label for="sujas1">Sujas (x100)</label>
+          <input type="number" id="sujas1" min="0" value="0">
         </div>
-        <button onclick="iniciarPartida()">Iniciar Jogo</button>
+        <div class="bonus-item">
+          <label for="as1">Canastra de Ás</label>
+          <input type="checkbox" id="as1">
+        </div>
+        <div class="bonus-item">
+          <label for="bateu1">Bateu (+100)</label>
+          <input type="checkbox" id="bateu1">
+        </div>
+      </div>
     </div>
 
-    <!-- Painel da Partida -->
-    <div id="game-screen" style="display: none;">
-        
-        <!-- Time 1 -->
-        <div class="team-card">
-            <h3 id="displayTeam1">Time 1</h3>
-            <div class="score-info">
-                <span>Pontos acumulados:</span>
-                <strong id="score1">0</strong>
-            </div>
-            <div class="rule-badge">
-                Desce com: <span id="req1">80</span> pts
-            </div>
-            <input type="number" id="round1" placeholder="Pontos da rodada (ex: 350)">
-        </div>
+    <!-- Time 2 -->
+    <div class="team-card">
+      <h3 id="displayTeam2">Time 2</h3>
+      <div class="score-info">
+        <span>Pontos acumulados:</span>
+        <strong id="score2">0</strong>
+      </div>
+      <div class="rule-badge">Desce com: <span id="req2">50</span> pts</div>
+      <input type="number" id="round2" placeholder="Pontos da rodada (ex: 200)">
 
-        <!-- Time 2 -->
-        <div class="team-card">
-            <h3 id="displayTeam2">Time 2</h3>
-            <div class="score-info">
-                <span>Pontos acumulados:</span>
-                <strong id="score2">0</strong>
-            </div>
-            <div class="rule-badge">
-                Desce com: <span id="req2">80</span> pts
-            </div>
-            <input type="number" id="round2" placeholder="Pontos da rodada (ex: 200)">
+      <div class="bonus-grid">
+        <div class="bonus-item">
+          <label for="limpas2">Limpas (x200)</label>
+          <input type="number" id="limpas2" min="0" value="0">
         </div>
-
-        <button id="btnSubmit" onclick="somarPontos()">Somar Rodada</button>
-        <div id="winnerDisplay"></div>
+        <div class="bonus-item">
+          <label for="sujas2">Sujas (x100)</label>
+          <input type="number" id="sujas2" min="0" value="0">
+        </div>
+        <div class="bonus-item">
+          <label for="as2">Canastra de Ás</label>
+          <input type="checkbox" id="as2">
+        </div>
+        <div class="bonus-item">
+          <label for="bateu2">Bateu (+100)</label>
+          <input type="checkbox" id="bateu2">
+        </div>
+      </div>
     </div>
+
+    <button id="btnSubmit" onclick="somarPontos()">Somar Rodada</button>
+
+    <div class="actions-row">
+      <button class="secondary" onclick="desfazerRodada()">Desfazer última rodada</button>
+    </div>
+
+    <div class="historico" id="historico">
+      <h4>Histórico de rodadas</h4>
+      <div class="historico-vazio" id="historicoVazio">Nenhuma rodada ainda.</div>
+    </div>
+
+    <div id="winnerDisplay"></div>
+
+    <button class="danger" onclick="novoJogo()">Novo Jogo</button>
+  </div>
 </div>
 
 <script>
-    // Lógica do Jogo
-    class Equipe {
-        constructor(nome) {
-            this.nome = nome;
-            this.pontos = 0;
-        }
+  // ---------------------------------------------------------------
+  // Modelo do jogo
+  // ---------------------------------------------------------------
+  const CHAVE_STORAGE = "canastraJogo";
 
-        getPontosParaDescer() {
-            return this.pontos >= 2500 ? 120 : 80;
-        }
+  class Equipe {
+    constructor(nome) {
+      this.nome = nome;
+      this.pontos = 0;
+      this.rodadas = []; // guarda o valor total (base + bônus) de cada rodada
     }
 
-    let t1, t2;
-
-    function iniciarPartida() {
-        const name1 = document.getElementById("name1").value.trim() || "Time 1";
-        const name2 = document.getElementById("name2").value.trim() || "Time 2";
-
-        t1 = new Equipe(name1);
-        t2 = new Equipe(name2);
-
-        document.getElementById("displayTeam1").innerText = t1.nome;
-        document.getElementById("displayTeam2").innerText = t2.nome;
-
-        document.getElementById("setup-screen").style.display = "none";
-        document.getElementById("game-screen").style.display = "block";
+    // Regra oficial: até 1495 -> 50 pts | 1500 a 2995 -> 80 pts | 3000+ -> 120 pts
+    getPontosParaDescer() {
+      if (this.pontos >= 3000) return 120;
+      if (this.pontos >= 1500) return 80;
+      return 50;
     }
 
-    function somarPontos() {
-        const input1 = document.getElementById("round1");
-        const input2 = document.getElementById("round2");
-
-        const p1 = parseInt(input1.value) || 0;
-        const p2 = parseInt(input2.value) || 0;
-
-        t1.pontos += p1;
-        t2.pontos += p2;
-
-        document.getElementById("score1").innerText = t1.pontos;
-        document.getElementById("score2").innerText = t2.pontos;
-
-        document.getElementById("req1").innerText = t1.getPontosParaDescer();
-        document.getElementById("req2").innerText = t2.getPontosParaDescer();
-
-        input1.value = "";
-        input2.value = "";
-
-        if (t1.pontos >= 5000 || t2.pontos >= 5000) {
-            encerrarJogo();
-        }
+    adicionarRodada(valor) {
+      this.rodadas.push(valor);
+      this.pontos += valor;
     }
 
-    function encerrarJogo() {
-        const winnerDiv = document.getElementById("winnerDisplay");
-        let mensagem = "";
+    desfazerUltimaRodada() {
+      const ultima = this.rodadas.pop();
+      if (ultima !== undefined) this.pontos -= ultima;
+      return ultima;
+    }
+  }
 
-        if (t1.pontos > t2.pontos) {
-            mensagem = `🏆 ${t1.nome} VENCEU COM ${t1.pontos} PONTOS!`;
-        } else if (t2.pontos > t1.pontos) {
-            mensagem = `🏆 ${t2.nome} VENCEU COM ${t2.pontos} PONTOS!`;
-        } else {
-            mensagem = `🤝 EMPATE EM ${t1.pontos} PONTOS!`;
-        }
+  let t1, t2;
 
-        winnerDiv.innerHTML = `<div class="winner-banner">${mensagem}</div>`;
-        document.getElementById("btnSubmit").disabled = true;
+  // ---------------------------------------------------------------
+  // Persistência (localStorage)
+  // ---------------------------------------------------------------
+  function salvarJogo() {
+    if (!t1 || !t2) return;
+    const estado = {
+      nome1: t1.nome, pontos1: t1.pontos, rodadas1: t1.rodadas,
+      nome2: t2.nome, pontos2: t2.pontos, rodadas2: t2.rodadas
+    };
+    localStorage.setItem(CHAVE_STORAGE, JSON.stringify(estado));
+  }
+
+  function carregarJogo() {
+    const dados = localStorage.getItem(CHAVE_STORAGE);
+    if (!dados) return false;
+
+    const estado = JSON.parse(dados);
+    t1 = new Equipe(estado.nome1);
+    t1.pontos = estado.pontos1;
+    t1.rodadas = estado.rodadas1 || [];
+
+    t2 = new Equipe(estado.nome2);
+    t2.pontos = estado.pontos2;
+    t2.rodadas = estado.rodadas2 || [];
+
+    mostrarTelaDeJogo();
+    atualizarInterface();
+    return true;
+  }
+
+  function limparJogoSalvo() {
+    localStorage.removeItem(CHAVE_STORAGE);
+  }
+
+  // ---------------------------------------------------------------
+  // Fluxo do jogo
+  // ---------------------------------------------------------------
+  function iniciarPartida() {
+    const name1 = document.getElementById("name1").value.trim() || "Time 1";
+    const name2 = document.getElementById("name2").value.trim() || "Time 2";
+
+    t1 = new Equipe(name1);
+    t2 = new Equipe(name2);
+
+    mostrarTelaDeJogo();
+    atualizarInterface();
+    salvarJogo();
+  }
+
+  function mostrarTelaDeJogo() {
+    document.getElementById("displayTeam1").innerText = t1.nome;
+    document.getElementById("displayTeam2").innerText = t2.nome;
+    document.getElementById("setup-screen").style.display = "none";
+    document.getElementById("game-screen").style.display = "block";
+  }
+
+  function lerBonus(sufixo) {
+    const limpas = parseInt(document.getElementById("limpas" + sufixo).value) || 0;
+    const sujas = parseInt(document.getElementById("sujas" + sufixo).value) || 0;
+    const as = document.getElementById("as" + sufixo).checked;
+    const bateu = document.getElementById("bateu" + sufixo).checked;
+    return (limpas * 200) + (sujas * 100) + (as ? 1000 : 0) + (bateu ? 100 : 0);
+  }
+
+  function limparCamposDaRodada(sufixo) {
+    document.getElementById("round" + sufixo).value = "";
+    document.getElementById("limpas" + sufixo).value = "0";
+    document.getElementById("sujas" + sufixo).value = "0";
+    document.getElementById("as" + sufixo).checked = false;
+    document.getElementById("bateu" + sufixo).checked = false;
+  }
+
+  function somarPontos() {
+    if (document.getElementById("btnSubmit").disabled) return;
+
+    const baseInput1 = document.getElementById("round1");
+    const baseInput2 = document.getElementById("round2");
+
+    const base1 = parseInt(baseInput1.value) || 0;
+    const base2 = parseInt(baseInput2.value) || 0;
+
+    const total1 = base1 + lerBonus("1");
+    const total2 = base2 + lerBonus("2");
+
+    t1.adicionarRodada(total1);
+    t2.adicionarRodada(total2);
+
+    limparCamposDaRodada("1");
+    limparCamposDaRodada("2");
+
+    atualizarInterface();
+    salvarJogo();
+
+    if (t1.pontos >= 5000 || t2.pontos >= 5000) {
+      encerrarJogo();
+    }
+  }
+
+  function desfazerRodada() {
+    if (!t1.rodadas.length) return;
+    t1.desfazerUltimaRodada();
+    t2.desfazerUltimaRodada();
+
+    // se o jogo tinha acabado, reabre
+    document.getElementById("btnSubmit").disabled = false;
+    document.getElementById("winnerDisplay").innerHTML = "";
+
+    atualizarInterface();
+    salvarJogo();
+  }
+
+  function novoJogo() {
+    const confirmar = confirm("Tem certeza que quer encerrar esse jogo e começar um novo?");
+    if (!confirmar) return;
+
+    limparJogoSalvo();
+    t1 = null;
+    t2 = null;
+
+    document.getElementById("game-screen").style.display = "none";
+    document.getElementById("setup-screen").style.display = "block";
+    document.getElementById("winnerDisplay").innerHTML = "";
+    document.getElementById("btnSubmit").disabled = false;
+  }
+
+  function encerrarJogo() {
+    const winnerDiv = document.getElementById("winnerDisplay");
+    let mensagem = "";
+
+    if (t1.pontos > t2.pontos) {
+      mensagem = `🏆 ${t1.nome} VENCEU COM ${t1.pontos} PONTOS!`;
+    } else if (t2.pontos > t1.pontos) {
+      mensagem = `🏆 ${t2.nome} VENCEU COM ${t2.pontos} PONTOS!`;
+    } else {
+      mensagem = `🤝 EMPATE EM ${t1.pontos} PONTOS!`;
     }
 
-    // Registro do Service Worker para o PWA (Modo App)
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
-            .then(() => console.log('App PWA pronto para uso!'))
-            .catch(err => console.log('Erro ao registrar PWA:', err));
+    winnerDiv.innerHTML = `<div class="winner-banner">${mensagem}</div>`;
+    document.getElementById("btnSubmit").disabled = true;
+  }
+
+  // ---------------------------------------------------------------
+  // Atualização da interface
+  // ---------------------------------------------------------------
+  function atualizarInterface() {
+    document.getElementById("score1").innerText = t1.pontos;
+    document.getElementById("score2").innerText = t2.pontos;
+    document.getElementById("req1").innerText = t1.getPontosParaDescer();
+    document.getElementById("req2").innerText = t2.getPontosParaDescer();
+
+    renderHistorico();
+
+    // se os pontos ficaram abaixo de 5000 (por causa de um "desfazer"),
+    // garante que o botão de somar volta a funcionar
+    if (t1.pontos < 5000 && t2.pontos < 5000) {
+      document.getElementById("btnSubmit").disabled = false;
     }
+  }
+
+  function renderHistorico() {
+    const historico = document.getElementById("historico");
+    const vazio = document.getElementById("historicoVazio");
+
+    // remove itens antigos, mantém o título e a mensagem de "vazio"
+    historico.querySelectorAll(".historico-item").forEach(el => el.remove());
+
+    if (!t1.rodadas.length) {
+      vazio.style.display = "block";
+      return;
+    }
+    vazio.style.display = "none";
+
+    for (let i = 0; i < t1.rodadas.length; i++) {
+      const item = document.createElement("div");
+      item.className = "historico-item";
+      item.innerHTML = `
+        <span>Rodada ${i + 1}</span>
+        <span>${t1.nome}: +${t1.rodadas[i]} &nbsp;|&nbsp; ${t2.nome}: +${t2.rodadas[i]}</span>
+      `;
+      historico.appendChild(item);
+    }
+
+    historico.scrollTop = historico.scrollHeight;
+  }
+
+  // ---------------------------------------------------------------
+  // Atalhos de teclado (Enter envia a rodada)
+  // ---------------------------------------------------------------
+  ["round1", "round2", "limpas1", "limpas2", "sujas1", "sujas2"].forEach(id => {
+    document.addEventListener("DOMContentLoaded", () => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") somarPontos();
+        });
+      }
+    });
+  });
+
+  // ---------------------------------------------------------------
+  // Ao carregar a página: tenta restaurar um jogo salvo
+  // ---------------------------------------------------------------
+  document.addEventListener("DOMContentLoaded", () => {
+    carregarJogo();
+  });
+
+  // Registro do Service Worker para o PWA (Modo App)
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log('App PWA pronto para uso!'))
+      .catch(err => console.log('Erro ao registrar PWA:', err));
+  }
 </script>
 
 </body>
