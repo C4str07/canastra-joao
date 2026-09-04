@@ -141,37 +141,6 @@
     margin-bottom: 12px;
   }
 
-  /* --- Bônus de canastra --- */
-  .bonus-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 10px;
-    font-size: 0.85rem;
-  }
-
-  .bonus-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: rgba(0,0,0,0.2);
-    border-radius: 6px;
-    padding: 6px 8px;
-  }
-
-  .bonus-item label { margin-bottom: 0; opacity: 1; }
-
-  .bonus-item input[type="number"] {
-    width: 55px;
-    padding: 4px;
-    text-align: center;
-  }
-
-  .bonus-item input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-  }
-
   /* --- Histórico de rodadas --- */
   .historico {
     margin-top: 15px;
@@ -248,27 +217,8 @@
         <span>Pontos acumulados:</span>
         <strong id="score1">0</strong>
       </div>
-      <div class="rule-badge">Desce com: <span id="req1">50</span> pts</div>
+      <div class="rule-badge">Desce com: <span id="req1">80</span> pts</div>
       <input type="number" id="round1" placeholder="Pontos da rodada (ex: 350)">
-
-      <div class="bonus-grid">
-        <div class="bonus-item">
-          <label for="limpas1">Limpas (x200)</label>
-          <input type="number" id="limpas1" min="0" value="0">
-        </div>
-        <div class="bonus-item">
-          <label for="sujas1">Sujas (x100)</label>
-          <input type="number" id="sujas1" min="0" value="0">
-        </div>
-        <div class="bonus-item">
-          <label for="as1">Canastra de Ás</label>
-          <input type="checkbox" id="as1">
-        </div>
-        <div class="bonus-item">
-          <label for="bateu1">Bateu (+100)</label>
-          <input type="checkbox" id="bateu1">
-        </div>
-      </div>
     </div>
 
     <!-- Time 2 -->
@@ -278,27 +228,8 @@
         <span>Pontos acumulados:</span>
         <strong id="score2">0</strong>
       </div>
-      <div class="rule-badge">Desce com: <span id="req2">50</span> pts</div>
+      <div class="rule-badge">Desce com: <span id="req2">80</span> pts</div>
       <input type="number" id="round2" placeholder="Pontos da rodada (ex: 200)">
-
-      <div class="bonus-grid">
-        <div class="bonus-item">
-          <label for="limpas2">Limpas (x200)</label>
-          <input type="number" id="limpas2" min="0" value="0">
-        </div>
-        <div class="bonus-item">
-          <label for="sujas2">Sujas (x100)</label>
-          <input type="number" id="sujas2" min="0" value="0">
-        </div>
-        <div class="bonus-item">
-          <label for="as2">Canastra de Ás</label>
-          <input type="checkbox" id="as2">
-        </div>
-        <div class="bonus-item">
-          <label for="bateu2">Bateu (+100)</label>
-          <input type="checkbox" id="bateu2">
-        </div>
-      </div>
     </div>
 
     <button id="btnSubmit" onclick="somarPontos()">Somar Rodada</button>
@@ -328,14 +259,14 @@
     constructor(nome) {
       this.nome = nome;
       this.pontos = 0;
-      this.rodadas = []; // guarda o valor total (base + bônus) de cada rodada
+      this.rodadas = [];
     }
 
-    // Regra oficial: até 1495 -> 50 pts | 1500 a 2995 -> 80 pts | 3000+ -> 120 pts
+    // Regra da casa:
+    // até 2495 -> 80 pts | 2500+ -> 120 pts
     getPontosParaDescer() {
-      if (this.pontos >= 3000) return 120;
-      if (this.pontos >= 1500) return 80;
-      return 50;
+      if (this.pontos >= 2500) return 120;
+      return 80;
     }
 
     adicionarRodada(valor) {
@@ -408,20 +339,8 @@
     document.getElementById("game-screen").style.display = "block";
   }
 
-  function lerBonus(sufixo) {
-    const limpas = parseInt(document.getElementById("limpas" + sufixo).value) || 0;
-    const sujas = parseInt(document.getElementById("sujas" + sufixo).value) || 0;
-    const as = document.getElementById("as" + sufixo).checked;
-    const bateu = document.getElementById("bateu" + sufixo).checked;
-    return (limpas * 200) + (sujas * 100) + (as ? 1000 : 0) + (bateu ? 100 : 0);
-  }
-
   function limparCamposDaRodada(sufixo) {
     document.getElementById("round" + sufixo).value = "";
-    document.getElementById("limpas" + sufixo).value = "0";
-    document.getElementById("sujas" + sufixo).value = "0";
-    document.getElementById("as" + sufixo).checked = false;
-    document.getElementById("bateu" + sufixo).checked = false;
   }
 
   function somarPontos() {
@@ -430,11 +349,8 @@
     const baseInput1 = document.getElementById("round1");
     const baseInput2 = document.getElementById("round2");
 
-    const base1 = parseInt(baseInput1.value) || 0;
-    const base2 = parseInt(baseInput2.value) || 0;
-
-    const total1 = base1 + lerBonus("1");
-    const total2 = base2 + lerBonus("2");
+    const total1 = parseInt(baseInput1.value) || 0;
+    const total2 = parseInt(baseInput2.value) || 0;
 
     t1.adicionarRodada(total1);
     t2.adicionarRodada(total2);
@@ -455,7 +371,6 @@
     t1.desfazerUltimaRodada();
     t2.desfazerUltimaRodada();
 
-    // se o jogo tinha acabado, reabre
     document.getElementById("btnSubmit").disabled = false;
     document.getElementById("winnerDisplay").innerHTML = "";
 
@@ -504,8 +419,6 @@
 
     renderHistorico();
 
-    // se os pontos ficaram abaixo de 5000 (por causa de um "desfazer"),
-    // garante que o botão de somar volta a funcionar
     if (t1.pontos < 5000 && t2.pontos < 5000) {
       document.getElementById("btnSubmit").disabled = false;
     }
@@ -515,7 +428,6 @@
     const historico = document.getElementById("historico");
     const vazio = document.getElementById("historicoVazio");
 
-    // remove itens antigos, mantém o título e a mensagem de "vazio"
     historico.querySelectorAll(".historico-item").forEach(el => el.remove());
 
     if (!t1.rodadas.length) {
@@ -540,7 +452,7 @@
   // ---------------------------------------------------------------
   // Atalhos de teclado (Enter envia a rodada)
   // ---------------------------------------------------------------
-  ["round1", "round2", "limpas1", "limpas2", "sujas1", "sujas2"].forEach(id => {
+  ["round1", "round2"].forEach(id => {
     document.addEventListener("DOMContentLoaded", () => {
       const el = document.getElementById(id);
       if (el) {
