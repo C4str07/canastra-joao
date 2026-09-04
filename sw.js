@@ -1,4 +1,4 @@
-const CACHE_NAME = 'canastra-v4';
+const CACHE_NAME = 'canastra-v5';
 // Lista exata de arquivos que precisam para rodar offline
 const assetsToCache = [
   './',
